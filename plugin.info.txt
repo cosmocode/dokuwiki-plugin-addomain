@@ -1,0 +1,7 @@
+base   addomain
+author Andreas Gohr
+email  gohr@cosmocode.de
+date   2012-08-22
+name   addomain plugin
+desc   Let users select the logon domain for AD auth
+url    http://www.cosmocode.de
