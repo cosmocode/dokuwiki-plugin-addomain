@@ -51,13 +51,15 @@ class action_plugin_addomain extends DokuWiki_Action_Plugin {
         $domains = array();
         foreach($conf['auth']['ad'] as $key => $val) {
             if(is_array($val)) {
-                $domains[] = $key;
+                $domains[$key] = $key;
             }
         }
         if(!$domains) return; // nothing to do
 
-        // add default
-        array_unshift($domains, '');
+        // add default domain, using the name from account suffix
+        $domains[] = ltrim($conf['auth']['ad']['account_suffix'],'@');
+
+        ksort($domains);
 
         /** @var $form Doku_Form */
         $form    =& $event->data;
