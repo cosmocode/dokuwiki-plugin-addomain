@@ -57,7 +57,7 @@ class action_plugin_addomain extends DokuWiki_Action_Plugin {
         if(!$domains) return; // nothing to do
 
         // add default domain, using the name from account suffix
-        $domains[] = ltrim($conf['auth']['ad']['account_suffix'],'@');
+        $domains[''] = ltrim($conf['auth']['ad']['account_suffix'],'@');
 
         ksort($domains);
 
