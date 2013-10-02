@@ -60,6 +60,12 @@ class action_plugin_addomain extends DokuWiki_Action_Plugin {
 
         // add default domain, using the name from account suffix
         $defaultdomain=ltrim($conf['plugin']['authad']['account_suffix'],'@');
+        // if the default domain name is provided fully qualified,
+        // only use the not fully qualified domain name in the domain list
+        $dotpos=strpos($defaultdomain,'.');
+        if($dotpos!==FALSE){
+          $defaultdomain=substr($defaultdomain,0,$dotpos);
+        }
         $domains[''] = $defaultdomain;
 
         ksort($domains);
