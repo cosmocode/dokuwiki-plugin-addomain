@@ -27,7 +27,7 @@ class action_plugin_addomain extends DokuWiki_Action_Plugin {
     public function handle_auth_login_check(Doku_Event &$event, $param) {
         /** @var auth_ad */
         global $auth;
-        if(!is_a($auth, 'auth_ad')) return; // AD not even used
+        if(!is_a($auth, 'auth_plugin_authad')) return; // AD not even used
 
         if(!empty($_REQUEST['dom'])){
             $usr = $auth->cleanUser($event->data['user']);
@@ -44,20 +44,23 @@ class action_plugin_addomain extends DokuWiki_Action_Plugin {
         global $conf;
         /** @var auth_ad */
         global $auth;
-        if(!is_array($conf['auth']['ad'])) return; // no AD config
-        if(!is_a($auth, 'auth_ad')) return; // AD not even used
+        if(!is_array($conf['plugin']['authad'])) return; // no AD config
+        if(!is_a($auth, 'auth_plugin_authad')) return; // AD not even used
 
         // find configured domains
         $domains = array();
-        foreach($conf['auth']['ad'] as $key => $val) {
+        foreach($conf['plugin']['authad'] as $key => $val) {
             if(is_array($val)) {
-                $domains[$key] = $key;
+                if ($key!='additional') {
+                   $domains[$key] = $key;
+                }
             }
         }
         if(!$domains) return; // nothing to do
 
         // add default domain, using the name from account suffix
-        $domains[''] = ltrim($conf['auth']['ad']['account_suffix'],'@');
+        $defaultdomain=ltrim($conf['plugin']['authad']['account_suffix'],'@');
+        $domains[''] = $defaultdomain;
 
         ksort($domains);
 
